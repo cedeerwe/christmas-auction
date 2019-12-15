@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.js": "/christmas-auction/static/js/main.a6d3d0ca.chunk.js",
+    "main.js.map": "/christmas-auction/static/js/main.a6d3d0ca.chunk.js.map",
+    "runtime-main.js": "/christmas-auction/static/js/runtime-main.7ad1abf8.js",
+    "runtime-main.js.map": "/christmas-auction/static/js/runtime-main.7ad1abf8.js.map",
+    "static/css/2.17e5ed98.chunk.css": "/christmas-auction/static/css/2.17e5ed98.chunk.css",
+    "static/js/2.13abc0bd.chunk.js": "/christmas-auction/static/js/2.13abc0bd.chunk.js",
+    "static/js/2.13abc0bd.chunk.js.map": "/christmas-auction/static/js/2.13abc0bd.chunk.js.map",
+    "index.html": "/christmas-auction/index.html",
+    "precache-manifest.1bb8bb2cc8ad1414374025f114f68635.js": "/christmas-auction/precache-manifest.1bb8bb2cc8ad1414374025f114f68635.js",
+    "service-worker.js": "/christmas-auction/service-worker.js",
+    "static/css/2.17e5ed98.chunk.css.map": "/christmas-auction/static/css/2.17e5ed98.chunk.css.map",
+    "static/js/2.13abc0bd.chunk.js.LICENSE": "/christmas-auction/static/js/2.13abc0bd.chunk.js.LICENSE"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.7ad1abf8.js",
+    "static/css/2.17e5ed98.chunk.css",
+    "static/js/2.13abc0bd.chunk.js",
+    "static/js/main.a6d3d0ca.chunk.js"
+  ]
+}
