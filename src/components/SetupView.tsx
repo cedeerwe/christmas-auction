@@ -5,7 +5,8 @@ import {
   changeSetupField,
   switchViewAuction,
   changeSetupAuction,
-  startNewAuction
+  startNewAuction,
+  changeSetupShowPoints
 } from '../store/actions';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -24,7 +25,9 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
     dispatch(changeSetupField(t)),
   switchViewToAuction: () => dispatch(switchViewAuction()),
   changeSetupAuction: (i: number) => dispatch(changeSetupAuction(i)),
-  newAuction: () => dispatch(startNewAuction())
+  newAuction: () => dispatch(startNewAuction()),
+  changeSetupShowPoints: (checked: boolean) =>
+    dispatch(changeSetupShowPoints(checked))
 });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -136,9 +139,20 @@ const _SetupView: React.FC<Props> = props => {
               </DropdownButton>
             </th>
           </tr>
+          <tr>
+            <th>Show Points</th>
+            <th>
+              <input
+                type="checkbox"
+                checked={props.state.optionInputs.showPoints}
+                onChange={e => props.changeSetupShowPoints(e.target.checked)}
+              />
+            </th>
+          </tr>
         </tbody>
       </Table>
-      <Row>
+      <hr />
+      <Row className="justify-content-between">
         <Button
           variant="success"
           disabled={!validateOptionInputs(props.state.optionInputs)}

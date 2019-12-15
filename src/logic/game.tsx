@@ -31,7 +31,8 @@ export function generatePlayer(options: Options): Player {
       options.maxPointsPerRound,
       options.sumPoints,
       options.numRounds
-    )
+    ),
+    hiddenPoints: ''
   };
 }
 
@@ -60,39 +61,65 @@ export function stateNewRound(game: Game): Game {
   };
 }
 
+export function findTwoBest(
+  bids: number[]
+): {
+  first: { playerId: number; bid: number };
+  second: { playerId: number; bid: number };
+} {
+  const result = {
+    first: { playerId: -1, bid: -1 },
+    second: { playerId: -1, bid: -1 }
+  };
+  for (let i = 0; i < bids.length; i++) {
+    const bid = bids[i];
+    if (bid > result.first.bid) {
+      result.second = result.first;
+      result.first = { playerId: i, bid };
+    } else if (bid > result.second.bid) {
+      result.second = { bid, playerId: i };
+    }
+  }
+  return result;
+}
+
 export function stateFinishRound(state: State): State {
-  let toBeDeducted: number[];
+  let toBeDeducted: Array<{ playerId: number; bid: number }>;
   switch (state.game.auctionType) {
     case AuctionType.Senior:
       if (state.players.length <= 2) {
-        toBeDeducted = state.game.bids.map((_, i) => i);
+        toBeDeducted = state.game.bids.map((bid, i) => ({ playerId: i, bid }));
         break;
       }
-      let best = [-1, -1];
-      let best2 = [-1, -1];
-      for (let i = 0; i < state.players.length; i++) {
-        const bid = state.game.bids[i];
-        if (bid > best[0]) {
-          best2 = best;
-          best = [bid, i];
-        } else if (bid > best2[0]) {
-          best2 = [bid, i];
-        }
+      const twoBest = findTwoBest(state.game.bids);
+      toBeDeducted = [twoBest.first, twoBest.second];
+      break;
+    case AuctionType.Vickrey:
+      if (state.players.length === 1) {
+        toBeDeducted = [{ playerId: 0, bid: state.game.bids[0] }];
       }
-      toBeDeducted = [best[1], best2[1]];
+      const bestTwo = findTwoBest(state.game.bids);
+      toBeDeducted = [
+        { playerId: bestTwo.first.playerId, bid: bestTwo.second.bid }
+      ];
       break;
     case AuctionType.AllPay:
-      toBeDeducted = state.game.bids.map((_, i) => i);
+      toBeDeducted = state.game.bids.map((bid, i) => ({ playerId: i, bid }));
       break;
     default:
-      toBeDeducted = [state.game.bids.indexOf(Math.max(...state.game.bids))];
+      const maxValue = Math.max(...state.game.bids);
+      toBeDeducted = [
+        { playerId: state.game.bids.indexOf(maxValue), bid: maxValue }
+      ];
       break;
   }
+  const deductionIds = toBeDeducted.map(t => t.playerId);
   const newPlayers = state.players.map((player, i) => {
-    if (toBeDeducted.includes(i)) {
+    if (deductionIds.includes(i)) {
       return {
         ...player,
-        balance: player.balance - state.game.bids[i]
+        balance:
+          player.balance - toBeDeducted.filter(t => i === t.playerId)[0].bid
       };
     } else {
       return player;
@@ -105,7 +132,11 @@ export function stateFinishRound(state: State): State {
       i === winner
         ? {
             ...p,
-            currentPoints: p.currentPoints + p.allPoints[state.game.round]
+            currentPoints:
+              p.currentPoints +
+              (state.options.showPoints
+                ? p.allPoints[state.game.round]
+                : parseInt(p.hiddenPoints))
           }
         : p
     ),
@@ -120,6 +151,11 @@ export function isInt(s: string): boolean {
 export function validPositiveInt(s: string): boolean {
   const i = parseInt(s);
   return !isNaN(i) && i === parseFloat(s) && i > 0;
+}
+
+export function validNonNegativeInt(s: string): boolean {
+  const i = parseInt(s);
+  return !isNaN(i) && i === parseFloat(s) && i >= 0;
 }
 
 export function invalidBid(
@@ -159,7 +195,8 @@ export function optionInputsToOptions(optionInputs: OptionInputs): Options {
     numPlayers: parseInt(optionInputs.numPlayers),
     sumPoints: parseInt(optionInputs.sumPoints),
     startingBalance: parseInt(optionInputs.startingBalance),
-    auctionType: optionInputs.auctionType
+    auctionType: optionInputs.auctionType,
+    showPoints: optionInputs.showPoints
   };
 }
 
@@ -170,5 +207,17 @@ export function validateOptionInputs(optionInputs: OptionInputs): boolean {
     validPositiveInt(optionInputs.numRounds) &&
     validPositiveInt(optionInputs.startingBalance) &&
     validPositiveInt(optionInputs.sumPoints)
+  );
+}
+
+export function winnerHasPoints(state: State): boolean {
+  const winner = argMax(state.game.bids);
+  return validNonNegativeInt(state.players[winner].hiddenPoints);
+}
+
+export function canBeFinished(state: State): boolean {
+  return (
+    (state.options.showPoints && Math.max(...state.game.bids) > 0) ||
+    (!state.options.showPoints && winnerHasPoints(state))
   );
 }

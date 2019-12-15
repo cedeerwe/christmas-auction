@@ -26,7 +26,8 @@ export const appReducer = createReducer<State, RootAction>(initialState, {
   },
   [actions.START_NEW_ROUND]: state => ({
     ...state,
-    game: stateNewRound(state.game)
+    game: stateNewRound(state.game),
+    players: state.players.map(p => ({ ...p, hiddenPoints: '' }))
   }),
   [actions.FINISH_ROUND]: state => stateFinishRound(state),
   [actions.PLACE_BID]: (state, action) => {
@@ -82,5 +83,25 @@ export const appReducer = createReducer<State, RootAction>(initialState, {
       ...state.optionInputs,
       auctionType: auctionTypes[action.payload] as AuctionType
     }
+  }),
+  [actions.CHANGE_SETUP_SHOW_POINTS]: (state, action) => ({
+    ...state,
+    optionInputs: {
+      ...state.optionInputs,
+      showPoints: action.payload
+    }
+  }),
+  [actions.CHANGE_HIDDEN_POINTS]: (state, action) => ({
+    ...state,
+    players: state.players.map((p, i) =>
+      i !== action.payload.playerId
+        ? p
+        : {
+            ...p,
+            hiddenPoints: isInt(action.payload.newPoints)
+              ? action.payload.newPoints
+              : p.hiddenPoints
+          }
+    )
   })
 });

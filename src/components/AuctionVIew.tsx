@@ -8,12 +8,13 @@ import {
   startNewRound,
   placeBid,
   changeBidInput,
-  switchViewSetup
+  switchViewSetup,
+  changeHiddenPoints
 } from '../store/actions';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
-import { invalidBid, getFee, isDone } from '../logic/game';
+import { invalidBid, getFee, isDone, canBeFinished } from '../logic/game';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const mapStateToProps = (state: State) => ({ state });
@@ -24,7 +25,9 @@ const mapDispatchToProps = (dispatch: Dispatch<RootAction>) => ({
   placeBid: (bid: { bid: number; playerId: number }) => dispatch(placeBid(bid)),
   changeBidInput: (t: { newInput: string; playerId: number }) =>
     dispatch(changeBidInput(t)),
-  backToSetup: () => dispatch(switchViewSetup())
+  backToSetup: () => dispatch(switchViewSetup()),
+  changeHiddenPoints: (t: { newPoints: string; playerId: number }) =>
+    dispatch(changeHiddenPoints(t))
 });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -67,7 +70,23 @@ const _AuctionView: React.FC<Props> = props => {
             <tr>
               <th>Points to score</th>
               {props.state.players.map((p, i) => (
-                <th key={i}>{p.allPoints[props.state.game.round]}</th>
+                <th key={i}>
+                  {props.state.options.showPoints ? (
+                    <span>{p.allPoints[props.state.game.round]}</span>
+                  ) : (
+                    <input
+                      type="number"
+                      style={{ maxWidth: '57px' }}
+                      value={p.hiddenPoints}
+                      onChange={e =>
+                        props.changeHiddenPoints({
+                          playerId: i,
+                          newPoints: e.target.value
+                        })
+                      }
+                    />
+                  )}
+                </th>
               ))}
             </tr>
             <tr>
@@ -111,7 +130,7 @@ const _AuctionView: React.FC<Props> = props => {
                 ) : (
                   <Button
                     variant="danger"
-                    disabled={Math.max(...props.state.game.bids) === 0}
+                    disabled={!canBeFinished(props.state)}
                     onClick={() => props.finishRound()}
                   >
                     Finish!
@@ -139,7 +158,14 @@ const _AuctionView: React.FC<Props> = props => {
           </tbody>
         </Table>
       </Row>
-      <Row>
+      <Row className="justify-content-between">
+        <Button
+          variant="secondary"
+          onClick={props.newRound}
+          disabled={isDone(props.state.game)}
+        >
+          Skip round
+        </Button>
         <Button variant="info" onClick={props.backToSetup}>
           Back to setup
         </Button>

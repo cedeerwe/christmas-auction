@@ -10,6 +10,8 @@ export const SWITCH_VIEW_SETUP = 'SWITCH_VIEW_SETUP';
 export const SWITCH_VIEW_AUCTION = 'SWITCH_VIEW_AUCTION';
 export const CHANGE_SETUP_FIELD = 'CHANGE_SETUP_FIELD';
 export const CHANGE_SETUP_AUCTION = 'CHANGE_SETUP_AUCTION';
+export const CHANGE_SETUP_SHOW_POINTS = 'CHANGE_SETUP_SHOW_POINTS';
+export const CHANGE_HIDDEN_POINTS = 'CHANGE_HIDDEN_POINTS';
 
 export const startNewAuction = createAction(START_NEW_AUCTION)();
 export const startNewRound = createAction(START_NEW_ROUND)();
@@ -29,3 +31,10 @@ export const changeSetupField = createAction(CHANGE_SETUP_FIELD)<{
   value: string;
 }>();
 export const changeSetupAuction = createAction(CHANGE_SETUP_AUCTION)<number>();
+export const changeSetupShowPoints = createAction(CHANGE_SETUP_SHOW_POINTS)<
+  boolean
+>();
+export const changeHiddenPoints = createAction(CHANGE_HIDDEN_POINTS)<{
+  newPoints: string;
+  playerId: number;
+}>();

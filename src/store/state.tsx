@@ -19,6 +19,7 @@ export type Player = {
   currentPoints: number;
   bidInput: string;
   allPoints: number[];
+  hiddenPoints: string;
 };
 
 export enum View {
@@ -30,8 +31,8 @@ export enum AuctionType {
   English = 'English',
   Dutch = 'Dutch',
   Vickrey = 'Vickrey',
-  AllPay = 'All pay',
-  BiddingFee = 'Bidding Fee',
+  AllPay = 'AllPay',
+  BiddingFee = 'BiddingFee',
   Senior = 'Senior'
 }
 
@@ -44,6 +45,7 @@ export type Options = {
   sumPoints: number;
   startingBalance: number;
   auctionType: AuctionType;
+  showPoints: boolean;
 };
 
 export type OptionInputs = {
@@ -53,6 +55,7 @@ export type OptionInputs = {
   sumPoints: string;
   startingBalance: string;
   auctionType: AuctionType;
+  showPoints: boolean;
 };
 
 export type Game = {
@@ -76,8 +79,9 @@ export const initialOptions: Options = {
   maxPointsPerRound: 10,
   numRounds: 15,
   sumPoints: 75,
-  startingBalance: 100,
-  auctionType: AuctionType.English
+  startingBalance: 50,
+  auctionType: AuctionType.English,
+  showPoints: true
 };
 
 export const initialOptionInputs: OptionInputs = {
@@ -86,7 +90,8 @@ export const initialOptionInputs: OptionInputs = {
   numRounds: initialOptions.numRounds.toString(),
   sumPoints: initialOptions.sumPoints.toString(),
   startingBalance: initialOptions.startingBalance.toString(),
-  auctionType: initialOptions.auctionType
+  auctionType: initialOptions.auctionType,
+  showPoints: initialOptions.showPoints
 };
 
 export const playerIcons = [
