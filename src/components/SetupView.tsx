@@ -16,7 +16,9 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { validateOptionInputs } from '../logic/game';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
+import { validateOptionInputs, auctionInfo } from '../logic/game';
 
 const mapStateToProps = (state: State) => ({ state });
 
@@ -36,10 +38,19 @@ type Props = ReturnType<typeof mapStateToProps> &
 const _SetupView: React.FC<Props> = props => {
   return (
     <Container>
+      <Row>
+        <h1>Welcome to the Christmas Auction!</h1>
+        <p>
+          There is no better time for some crazy bidding than the most festive
+          season of the year. Enjoy a competitive evening with your friends and
+          let us see, who will be the master at the auction table. Prepare your
+          coins, my dear friends. The Christmas auction shall begin soon!
+        </p>
+      </Row>
       <Table>
         <thead>
           <tr>
-            <th>Attribute</th>
+            <th>Auction Attribute</th>
             <th>Value</th>
           </tr>
         </thead>
@@ -128,13 +139,32 @@ const _SetupView: React.FC<Props> = props => {
                 onSelect={(e: string) => props.changeSetupAuction(parseInt(e))}
               >
                 {auctionTypes.map((t, i) => (
-                  <Dropdown.Item
-                    eventKey={i.toString()}
-                    active={t === props.state.optionInputs.auctionType}
+                  <OverlayTrigger
                     key={i}
+                    placement="right"
+                    overlay={
+                      <Popover
+                        id={'popover-' + t}
+                        style={{
+                          fontFamily: 'Mountains of Christmas',
+                          fontSize: 20
+                        }}
+                      >
+                        <Popover.Title as="h3" style={{ fontSize: 20 }}>
+                          {t} auction
+                        </Popover.Title>
+                        <Popover.Content>{auctionInfo[i]}</Popover.Content>
+                      </Popover>
+                    }
                   >
-                    {t}
-                  </Dropdown.Item>
+                    <Dropdown.Item
+                      eventKey={i.toString()}
+                      active={t === props.state.optionInputs.auctionType}
+                      key={i}
+                    >
+                      {t}
+                    </Dropdown.Item>
+                  </OverlayTrigger>
                 ))}
               </DropdownButton>
             </th>
@@ -142,12 +172,25 @@ const _SetupView: React.FC<Props> = props => {
           <tr>
             <th>Show Points</th>
             <th>
-              <input
-                type="checkbox"
-                checked={props.state.optionInputs.showPoints}
-                onChange={e => props.changeSetupShowPoints(e.target.checked)}
-                style={{ width: '30px', height: '30px' }}
-              />
+              <OverlayTrigger
+                placement="right"
+                overlay={
+                  <Popover id="popover-show-points">
+                    <Popover.Content>
+                      Controls whether the points are seen by everyone or all
+                      the participants have secretly generated points on their
+                      own devices.
+                    </Popover.Content>
+                  </Popover>
+                }
+              >
+                <input
+                  type="checkbox"
+                  checked={props.state.optionInputs.showPoints}
+                  onChange={e => props.changeSetupShowPoints(e.target.checked)}
+                  style={{ width: '30px', height: '30px' }}
+                />
+              </OverlayTrigger>
             </th>
           </tr>
         </tbody>

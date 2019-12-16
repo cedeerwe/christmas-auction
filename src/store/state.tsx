@@ -30,10 +30,10 @@ export enum View {
 export enum AuctionType {
   English = 'English',
   Dutch = 'Dutch',
-  Vickrey = 'Vickrey',
-  AllPay = 'AllPay',
   BiddingFee = 'BiddingFee',
-  Senior = 'Senior'
+  Vickrey = 'Vickrey',
+  Senior = 'Senior',
+  AllPay = 'AllPay'
 }
 
 export const auctionTypes = Object.keys(AuctionType);

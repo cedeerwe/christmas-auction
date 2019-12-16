@@ -13,7 +13,9 @@ const App: React.FC = () => {
         backgroundImage: 'url(background.jpg)',
         backgroundColor: 'hsla(0,0%,100%,0.85)',
         backgroundBlendMode: 'overlay',
-        opacity: 1
+        opacity: 1,
+        fontFamily: 'Mountains of Christmas',
+        fontSize: 25
       }}
     >
       <MainView />

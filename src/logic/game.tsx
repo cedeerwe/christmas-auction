@@ -221,3 +221,12 @@ export function canBeFinished(state: State): boolean {
     (!state.options.showPoints && winnerHasPoints(state))
   );
 }
+
+export const auctionInfo = [
+  'The most standard auction, where every bigger has to bid higher than the previous one. The highest bidder wins the item.',
+  'The announcer starts at a high number and decreases the bid over time. First one to raise his/her hand gets the item.',
+  'Like English auction, but every bid costs 1 additional coin to make.',
+  'A sealed bid, where each participant chooses a bid secretly. After the bids are revealed, the highest bidder wins the item and pays the 2nd highest bid price.',
+  'Like English auction, but the first two highest bids pay their bids. Still, only the highest bid gets the item.',
+  'Like English auction, but all bidders pay their highest bid. Still, only the highest bid gets the item.'
+];
