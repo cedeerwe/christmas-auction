@@ -146,6 +146,7 @@ const _SetupView: React.FC<Props> = props => {
                 type="checkbox"
                 checked={props.state.optionInputs.showPoints}
                 onChange={e => props.changeSetupShowPoints(e.target.checked)}
+                style={{ width: '30px', height: '30px' }}
               />
             </th>
           </tr>
