@@ -38,7 +38,7 @@ const _AuctionView: React.FC<Props> = props => {
     <Container style={{ marginLeft: 'auto', marginRight: 'auto' }}>
       <h1>{props.state.game.auctionType} auction</h1>
       <Row>
-        <Table striped bordered>
+        <Table bordered>
           <thead>
             <tr>
               <th>

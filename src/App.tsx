@@ -11,7 +11,7 @@ const App: React.FC = () => {
         width: '100%',
         height: '100vh',
         backgroundImage: 'url(background.jpg)',
-        backgroundColor: 'hsla(0,0%,100%,0.85)',
+        backgroundColor: 'hsla(0,0%,100%,0.80)',
         backgroundBlendMode: 'overlay',
         opacity: 1,
         fontFamily: 'Mountains of Christmas',

@@ -176,7 +176,12 @@ const _SetupView: React.FC<Props> = props => {
                 placement="right"
                 overlay={
                   <Popover id="popover-show-points">
-                    <Popover.Content>
+                    <Popover.Content
+                      style={{
+                        fontFamily: 'Mountains of Christmas',
+                        fontSize: 20
+                      }}
+                    >
                       Controls whether the points are seen by everyone or all
                       the participants have secretly generated points on their
                       own devices.
