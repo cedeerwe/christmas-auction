@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8487af4dbc047b268b2bf8615874ce1f",
+    "revision": "d4030a3a5d0fa848e3cd371aedde2e0a",
     "url": "/christmas-auction/index.html"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/christmas-auction/static/js/2.1d167bc6.chunk.js.LICENSE"
   },
   {
-    "revision": "6e1838f2d3aac6681be2",
-    "url": "/christmas-auction/static/js/main.342e08f4.chunk.js"
+    "revision": "c8225490c9e6c498adca",
+    "url": "/christmas-auction/static/js/main.b3103108.chunk.js"
   },
   {
     "revision": "e939e13c4531974a79b1",
